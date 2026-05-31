@@ -1,0 +1,8 @@
+{
+  "0": "Operating Systems: A Deadlock occurs when four conditions hold simultaneously: 1. Mutual Exclusion (only one process can use a resource at a time), 2. Hold and Wait (processes hold allocated resources while waiting for new ones), 3. No Preemption (resources cannot be forcibly taken), 4. Circular Wait (a closed chain of processes exists where each waits for a resource held by the next).",
+  "1": "Operating Systems: Virtual Memory paging algorithms include FIFO, Optimal Page Replacement (PR), and LRU (Least Recently Used). LRU replaces the page that has not been referenced for the longest period of time.",
+  "2": "Operating Systems: ACID properties in transaction processing stand for Atomicity (all or nothing executes), Consistency (state transitions remain legal), Isolation (concurrent executions do not interfere), and Durability (committed results survive crashes).",
+  "3": "Computer Networks: The TCP 3-Way Handshake protocol requires three explicit segment steps: 1. Client sends SYN (Synchronize Sequence Number packet), 2. Server responds with SYN-ACK (Synchronize-Acknowledgment packet token), 3. Client replies with ACK (Acknowledgment validation packet). Connection is then established.",
+  "4": "Computer Networks: The OSI Model contains 7 structural protocol abstraction layers: Physical, Data Link, Network (IP routing tracking), Transport (TCP/UDP multiplex lines), Session, Presentation, and Application (HTTP/FTP interface gateways).",
+  "5": "Computer Networks: DNS (Domain Name System) maps human-readable domain text names directly to numeric IP system routing vectors. It operates primarily over UDP protocol port 53 to optimize resolution latency bounds."
+}
