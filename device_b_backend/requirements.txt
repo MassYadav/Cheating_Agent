@@ -5,4 +5,7 @@ langchain-core>=0.1.0
 ollama>=0.1.6
 faiss-cpu>=1.7.4
 pydantic>=2.0.0
+pydantic-settings>=2.1.0     # CRITICAL: Required for type-safe SystemSettings parsing
 prometheus_client>=0.17.0
+websockets>=12.0             # REQUIRED: For asynchronous, low-latency client streaming
+pillow>=10.2.0               # REQUIRED: For handling raw in-memory image byte arrays

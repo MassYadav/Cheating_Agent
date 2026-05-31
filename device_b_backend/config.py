@@ -1,9 +1,3 @@
-import os
-
-OLLAMA_HOST = os.getenv('OLLAMA_HOST', 'http://localhost:11434')
-EMBEDDING_MODEL = 'nomic-embed-text'
-COGNITIVE_MODEL = 'qwen2.5-coder:7b'
-
 
 import os
 from pydantic_settings import BaseSettings, SettingsConfigDict
