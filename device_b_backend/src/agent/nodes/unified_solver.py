@@ -1,6 +1,6 @@
 import logging
+import httpx
 from src.agent.state import AgentWorkspaceState
-from src.llm.client import inference_driver
 from src.rag.vector_store import vector_db
 
 logger = logging.getLogger("backend.agent.nodes.unified_solver")
@@ -27,11 +27,10 @@ Provide your output using this exact structural template:
 ```java
 // Complete, clean, highly optimized Java code with concise system comments
 """
-
 async def unified_solver_node(state: AgentWorkspaceState) -> AgentWorkspaceState:
     """
     Single-Pass High-Performance Cognitive Inference Engine.
-    Minimizes localized CPU pre-fill latency boundaries by combining evaluation steps.
+    Communicates directly with the Ollama container subsystem via async HTTP streams.
     """
     logger.info("Initializing high-performance consolidated solver pipeline...")
 
@@ -44,7 +43,11 @@ async def unified_solver_node(state: AgentWorkspaceState) -> AgentWorkspaceState
 
     # 1. High-speed local similarity index lookup (Sub-millisecond FAISS retrieval)
     logger.info("Executing parallel vector matrix background lookup...")
-    retrieved_contexts = await vector_db.similarity_search(query=raw_query, top_k=2)
+    try:
+        retrieved_contexts = await vector_db.similarity_search(query=raw_query, top_k=2)
+    except Exception as e:
+        logger.warning(f"Vector lookup bypassed or uninitialized: {str(e)}")
+        retrieved_contexts = []
 
     grounding_context = ""
     if retrieved_contexts:
@@ -54,16 +57,31 @@ async def unified_solver_node(state: AgentWorkspaceState) -> AgentWorkspaceState
     # 2. Formulate consolidated runtime execution prompt
     execution_prompt = f"{grounding_context}Target Input Problem:\n{raw_query}"
 
-    logger.info("Dispatching unified computational matrix directly to local model inference driver...")
+    logger.info("Dispatching optimized matrix request directly to local Ollama API engine...")
     try:
-        raw_response = await inference_driver.generate_response(
-            system_prompt=CONSOLIDATED_SYSTEM_PROMPT,
-            user_prompt=execution_prompt
-        )
-        state["candidate_solution_draft"] = raw_response
-        logger.info("Consolidated structural optimization cycle successfully executed.")
+        # Bypassing the abstract wrapper class and hitting the live daemon directly on port 11434
+        async with httpx.AsyncClient(timeout=180.0) as client:
+            response = await client.post(
+                "http://localhost:11434/api/generate",
+                json={
+                    "model": "qwen2.5-coder:7b",
+                    "prompt": execution_prompt,
+                    "system": CONSOLIDATED_SYSTEM_PROMPT,
+                    "stream": False
+                }
+            )
+
+            if response.status_code == 200:
+                raw_response = response.json().get("response", "Empty response matrix array generated.")
+                state["candidate_solution_draft"] = raw_response
+                logger.info("Consolidated structural optimization cycle successfully executed.")
+            else:
+                logger.error(f"Ollama server returned an invalid state code: {response.status_code}")
+                state["candidate_solution_draft"] = f"Server Error: Ollama engine returned status {response.status_code}"
+
     except Exception as hardware_fault:
-        logger.error(f"Unified solver node encountered an inference failure: {str(hardware_fault)}")
+        logger.error(f"Unified solver node encountered an network inference failure: {str(hardware_fault)}")
         state["candidate_solution_draft"] = "System Fault: Local optimization loop processing error."
 
     return state
+

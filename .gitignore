@@ -51,6 +51,24 @@ coverage.xml
 .pytest_cache/
 cover/
 
+# Virtual Environments (Ignore completely)
+**/venv/
+**/.venv/
+env/
+
+# Python compiled bytecode cache
+**/__pycache__/
+*.pyc
+*.pyo
+*.pyd
+
+# Operating system metadata strings
+.DS_Store
+Thumbs.db
+
+# IDE specific configurations (Optional)
+.idea/
+.history/
 # Translations
 *.mo
 *.pot
